@@ -4,6 +4,7 @@ require("dotenv").config();
  const cors = require('cors')
 
  const authRoute = require("./Routes/auth");
+ const quizRoute = require("./Routes/quiz");
  const app= express()
 
  app.use(express.json())
@@ -24,6 +25,9 @@ require("dotenv").config();
  })
 
  app.use("/api/v1/auth", authRoute);
+ app.use("/api/v1/quiz", quizRoute);
+
+ 
  app.listen(PORT, ()=>{
     try {
          mongoose.connect(MONGODBURL)
