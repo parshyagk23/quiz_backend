@@ -5,6 +5,7 @@ const PostQuiz = async (req, res) => {
   try {
     const {
       QuizName,
+      QuizId,
       QuizType,
       Questions,
       Impressions,
@@ -13,7 +14,7 @@ const PostQuiz = async (req, res) => {
     } = req.body;
     const token = req.headers["authorization"];
     const userId = verifyToken.decodeToken(token);
-    if (!QuizName || !QuizType) {
+    if (!QuizName || !QuizType || !QuizId) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
     Questions.map((data) => {
@@ -69,6 +70,7 @@ const PostQuiz = async (req, res) => {
     const CreateQuiz = await new quiz({
       QuizName,
       QuizType,
+      QuizId,
       userId,
       Questions,
       Impressions,
@@ -92,7 +94,7 @@ const GetQuiz = async (req, res) => {
     if (!id) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
-    const GetQuizById = await quiz.findOne({ _id: id });
+    const GetQuizById = await quiz.findOne({ QuizId:id });
     if (!GetQuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
     }

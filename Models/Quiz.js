@@ -15,6 +15,10 @@ const quizSchema = new mongoose.Schema(
             type:String,
             require:true,
         },
+        QuizId:{
+            type:String,
+            require:true,
+        },
         Questions:[
         {
             Question:{
