@@ -9,8 +9,6 @@ const PostQuiz = async (req, res) => {
       QuizType,
       Questions,
       Impressions,
-      AttemptedQuestion,
-      CorrectAns,
     } = req.body;
     const token = req.headers["authorization"];
     const userId = verifyToken.decodeToken(token);
@@ -74,8 +72,7 @@ const PostQuiz = async (req, res) => {
       userId,
       Questions,
       Impressions,
-      AttemptedQuestion,
-      CorrectAns,
+      
     });
     await CreateQuiz.save();
 
@@ -146,11 +143,11 @@ const isCorrectQuizAns = async (req, res) => {
     }
     if (QuizById.QuizType === "Q&A") {
       const isCorrectQuizAns = option?.isCorrectAns;
-      QuizById.AttemptedQuestion = (QuizById?.AttemptedQuestion || 0) + 1;
+      question.AttemptedQuestion = (question?.AttemptedQuestion || 0) + 1;
 
     
       if (isCorrectQuizAns) {
-        QuizById.CorrectAns = (QuizById?.CorrectAns || 0) + 1;
+        question.CorrectAns = (question?.CorrectAns || 0) + 1;
       }
       await QuizById.save();
       return res.status(200).json({ QuizAns: isCorrectQuizAns });

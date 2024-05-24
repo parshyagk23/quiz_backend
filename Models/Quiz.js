@@ -50,6 +50,12 @@ const quizSchema = new mongoose.Schema(
                     }
                 }
             ],
+            AttemptedQuestion:{
+                type:Number,
+            },
+            CorrectAns:{
+                type:Number,
+            }
            
         }
         
@@ -57,12 +63,7 @@ const quizSchema = new mongoose.Schema(
         Impressions:{
             type:Number,
         },
-        AttemptedQuestion:{
-            type:Number,
-        },
-        CorrectAns:{
-            type:Number,
-        }
+        
         
     },
     {timestamps:{createdAt:'createdAt' , updatedAt:'UpdatedAt'}}
