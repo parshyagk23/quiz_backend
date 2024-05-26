@@ -73,6 +73,7 @@ const PostQuiz = async (req, res) => {
       userId,
       Questions,
       Impressions,
+      timer
       
     });
     await CreateQuiz.save();

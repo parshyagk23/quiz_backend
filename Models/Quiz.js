@@ -57,14 +57,15 @@ const quizSchema = new mongoose.Schema(
             WrongAns:{
                 type:Number,
             },
-            timer:{
-                type:Number
-            },
+            
            
         }
         
         ],
         Impressions:{
+            type:Number,
+        },
+        timer:{
             type:Number,
         },
         
