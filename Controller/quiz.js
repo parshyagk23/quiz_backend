@@ -125,7 +125,7 @@ const GetQuizByUserId = async (req, res) => {
 const isCorrectQuizAns = async (req, res) => {
   try {
     let { quizid, questionindex, optionindex } = req.params;
-    if (!quizid || !questionindex || !optionindex) {
+    if (!quizid || !questionindex ) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
     const QuizById = await quiz.findOne({ _id: quizid });
@@ -144,7 +144,10 @@ const isCorrectQuizAns = async (req, res) => {
     if (QuizById.QuizType === "Q&A") {
       const isCorrectQuizAns = option?.isCorrectAns;
       question.AttemptedQuestion = (question?.AttemptedQuestion || 0) + 1;
-
+      if(!optionindex){
+        await QuizById.save();
+        return res.status(200).json({ QuizAns: false });
+      }
     
       if (isCorrectQuizAns) {
         question.CorrectAns = (question?.CorrectAns || 0) + 1;
