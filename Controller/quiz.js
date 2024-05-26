@@ -138,8 +138,8 @@ const isCorrectQuizAns = async (req, res) => {
     
     const question = QuizById?.Questions?.[questionindex];
     const option = question?.Options?.[optionindex];
-    if (!question || !option) {
-      return res.status(400).json({ errormessage: "Invalid question or option index" });
+    if (!question) {
+      return res.status(400).json({ errormessage: "Invalid question index" });
     }
     if (QuizById.QuizType === "Q&A") {
       const isCorrectQuizAns = option?.isCorrectAns;
