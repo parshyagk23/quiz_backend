@@ -151,6 +151,9 @@ const isCorrectQuizAns = async (req, res) => {
     
       if (isCorrectQuizAns) {
         question.CorrectAns = (question?.CorrectAns || 0) + 1;
+      }else{
+        question.WrongAns = (question?.WrongAns || 0) + 1;
+
       }
       await QuizById.save();
       return res.status(200).json({ QuizAns: isCorrectQuizAns });
