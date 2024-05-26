@@ -9,6 +9,7 @@ const PostQuiz = async (req, res) => {
       QuizType,
       Questions,
       Impressions,
+      timer
     } = req.body;
     const token = req.headers["authorization"];
     const userId = verifyToken.decodeToken(token);
@@ -16,7 +17,7 @@ const PostQuiz = async (req, res) => {
       return res.status(400).json({ errormessage: "Bad request" });
     }
     Questions.map((data) => {
-      const { Question, OptionType, Options, timer } = data;
+      const { Question, OptionType, Options } = data;
       if (!Question || !OptionType) {
         return res.status(400).json({ errormessage: "Bad request" });
       }

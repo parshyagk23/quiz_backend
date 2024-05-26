@@ -29,9 +29,7 @@ const quizSchema = new mongoose.Schema(
                 type:String,
                 require:true
             },
-            timer:{
-                type:Number
-            },
+          
             Options:[
                 {
                     text:{
@@ -58,7 +56,10 @@ const quizSchema = new mongoose.Schema(
             },
             WrongAns:{
                 type:Number,
-            }
+            },
+            timer:{
+                type:Number
+            },
            
         }
         
