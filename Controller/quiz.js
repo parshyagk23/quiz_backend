@@ -144,7 +144,7 @@ const isCorrectQuizAns = async (req, res) => {
     if (QuizById.QuizType === "Q&A") {
       const isCorrectQuizAns = option?.isCorrectAns;
       question.AttemptedQuestion = (question?.AttemptedQuestion || 0) + 1;
-      if(!optionindex){
+      if(optionindex===  undefined){
         await QuizById.save();
         return res.status(200).json({ QuizAns: false });
       }
