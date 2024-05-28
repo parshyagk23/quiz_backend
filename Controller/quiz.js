@@ -227,10 +227,14 @@ const isCorrectQuizAns = async (req, res) => {
     if (!quizid || !questionindex ) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
+     if (QuizById.QuizType === "Poll") {
+        return res.status(401).json({ QuizAns: false });
+     }
     const QuizById = await Quiz.findOne({ _id: quizid });
     if (!QuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
     }
+    
 
     questionindex = Number(questionindex);
     optionindex = Number(optionindex);
@@ -245,7 +249,7 @@ const isCorrectQuizAns = async (req, res) => {
       question.AttemptedQuestion = (question?.AttemptedQuestion || 0) + 1;
       if(optionindex===  undefined){
         await QuizById.save();
-        return res.status(200).json({ QuizAns: false });
+        return res.status(401).json({ QuizAns: false });
       }
     
       if (isCorrectQuizAns) {
