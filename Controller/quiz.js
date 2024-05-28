@@ -96,9 +96,10 @@ const UpdateQuiz = async (req, res) => {
       Impressions,
       timer
     } = req.body;
+    const { id }  = req.params
     const token = req.headers["authorization"];
     const userId = verifyToken.decodeToken(token);
-    const isQuizExist = await Quiz.findOne({ _id: userId });
+    const isQuizExist = await Quiz.findOne({ _id: id });
     if (!isQuizExist) {
       return res.status(401).json({
         errormessage: "Quiz not found!!",
@@ -158,7 +159,7 @@ const UpdateQuiz = async (req, res) => {
     });
 
     const UpdatedQuiz = await Quiz.updateOne(
-      {_id:userId},
+      {_id:id},
       {
         $set:{
           QuizName,
