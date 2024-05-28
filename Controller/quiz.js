@@ -1,5 +1,6 @@
 const quiz = require("./../Models/Quiz");
 const verifyToken = require("./../Middlewares/VerifyToken");
+const Quiz = require("./../Models/Quiz");
 
 const PostQuiz = async (req, res) => {
   try {
@@ -80,6 +81,102 @@ const PostQuiz = async (req, res) => {
 
     return res.status(200).json({
       message: "Quiz create successfully",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const UpdateQuiz = async (req, res) => {
+  try {
+    const {
+      QuizName,
+      QuizId,
+      QuizType,
+      Questions,
+      Impressions,
+      timer
+    } = req.body;
+    const token = req.headers["authorization"];
+    const userId = verifyToken.decodeToken(token);
+    const isQuizExist = await Stories.findOne({ _id: userId });
+    if (!isQuizExist) {
+      return res.status(401).json({
+        errormessage: "Quiz not found!!",
+      });
+    }
+    if (!QuizName || !QuizType || !QuizId) {
+      return res.status(400).json({ errormessage: "Bad request" });
+    }
+    Questions.map((data) => {
+      const { Question, OptionType, Options } = data;
+      if (!Question || !OptionType) {
+        return res.status(400).json({ errormessage: "Bad request" });
+      }
+
+      let isError = false;
+      Options.map((data) => {
+        const { text, imageUrl, isCorrectAns, PollCount } = data;
+        if (OptionType === "Q&A") {
+          if (OptionType === "text") {
+            if (text === "" || isCorrectAns == undefined) {
+              isError = true;
+              return;
+            }
+          } else if (OptionType === "imageUrl") {
+            if (imageUrl === "" || isCorrectAns == undefined) {
+              isError = true;
+              return;
+            }
+          } else if (OptionType === "textimageUrl") {
+            if (text === "" || imageUrl === "" || isCorrectAns == undefined) {
+              isError = true;
+              return;
+            }
+          }
+        } else {
+          if (OptionType === "text") {
+            if (text === "") {
+              isError = true;
+              return;
+            }
+          } else if (OptionType === "imageUrl") {
+            if (imageUrl === "") {
+              isError = true;
+              return;
+            }
+          } else if (OptionType === "textimageUrl") {
+            if (text === "" || imageUrl === "") {
+              isError = true;
+              return;
+            }
+          }
+        }
+        if (isError) {
+          return res.status(400).json({ errormessage: "Bad request" });
+        }
+      });
+    });
+
+    const UpdatedQuiz = await Quiz.updateOne(
+      {_id:userId},
+      {
+        $set:{
+          QuizName,
+          QuizType,
+          QuizId,
+          userId,
+          Questions,
+          Impressions,
+          timer
+        }
+      }
+    )
+  
+    await isQuizExist.save();
+
+    return res.status(200).json({
+      message: "Quiz updated successfully",
     });
   } catch (error) {
     console.log(error);
@@ -186,4 +283,4 @@ const DeleteQuizById = async (req, res) => {
   }
 };
 
-module.exports = { PostQuiz, GetQuiz, GetQuizByUserId, isCorrectQuizAns,DeleteQuizById };
+module.exports = { PostQuiz, GetQuiz, GetQuizByUserId, isCorrectQuizAns,DeleteQuizById ,UpdateQuiz};
