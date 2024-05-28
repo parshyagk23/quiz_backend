@@ -1,4 +1,3 @@
-const quiz = require("./../Models/Quiz");
 const verifyToken = require("./../Middlewares/VerifyToken");
 const Quiz = require("./../Models/Quiz");
 
@@ -67,7 +66,7 @@ const PostQuiz = async (req, res) => {
       });
     });
 
-    const CreateQuiz = await new quiz({
+    const CreateQuiz = await new Quiz({
       QuizName,
       QuizType,
       QuizId,
@@ -99,7 +98,7 @@ const UpdateQuiz = async (req, res) => {
     } = req.body;
     const token = req.headers["authorization"];
     const userId = verifyToken.decodeToken(token);
-    const isQuizExist = await Stories.findOne({ _id: userId });
+    const isQuizExist = await Quiz.findOne({ _id: userId });
     if (!isQuizExist) {
       return res.status(401).json({
         errormessage: "Quiz not found!!",
@@ -190,7 +189,7 @@ const GetQuiz = async (req, res) => {
     if (!id) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
-    const GetQuizById = await quiz.findOne({ QuizId:id });
+    const GetQuizById = await Quiz.findOne({ QuizId:id });
     if (!GetQuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
     }
@@ -210,7 +209,7 @@ const GetQuizByUserId = async (req, res) => {
     if (!userId) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
-    const QuizByUserId = await quiz.find({ userId });
+    const QuizByUserId = await Quiz.find({ userId });
     if (!QuizByUserId) {
       return res.status(401).json({ errormessage: "Data not found" });
     }
@@ -227,7 +226,7 @@ const isCorrectQuizAns = async (req, res) => {
     if (!quizid || !questionindex ) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
-    const QuizById = await quiz.findOne({ _id: quizid });
+    const QuizById = await Quiz.findOne({ _id: quizid });
     if (!QuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
     }
@@ -271,7 +270,7 @@ const DeleteQuizById = async (req, res) => {
     if (!id) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
-    const QuizById = await quiz.findByIdAndDelete({ _id: id });
+    const QuizById = await Quiz.findByIdAndDelete({ _id: id });
     if (!QuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
     }
