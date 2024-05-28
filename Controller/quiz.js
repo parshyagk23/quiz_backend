@@ -231,6 +231,11 @@ const isCorrectQuizAns = async (req, res) => {
     if (!QuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
     }
+    if (QuizById.QuizType === "Poll") {
+      if(!optionindex){
+        return res.status(401).json({ QuizAns: false });
+      }
+    }
 
     questionindex = Number(questionindex);
     optionindex = Number(optionindex);
@@ -245,7 +250,7 @@ const isCorrectQuizAns = async (req, res) => {
       question.AttemptedQuestion = (question?.AttemptedQuestion || 0) + 1;
       if(optionindex===  undefined){
         await QuizById.save();
-        return res.status(200).json({ QuizAns: false });
+        return res.status(401).json({ QuizAns: false });
       }
     
       if (isCorrectQuizAns) {
