@@ -227,6 +227,7 @@ const isCorrectQuizAns = async (req, res) => {
     if (!quizid || !questionindex ) {
       return res.status(400).json({ errormessage: "Bad request" });
     }
+     
     const QuizById = await Quiz.findOne({ _id: quizid });
     if (!QuizById) {
       return res.status(401).json({ errormessage: "Data not found" });
@@ -234,9 +235,9 @@ const isCorrectQuizAns = async (req, res) => {
     if (QuizById.QuizType === "Poll") {
       if(!optionindex){
         return res.status(401).json({ QuizAns: false });
-      }
-    }
 
+      }
+   }
     questionindex = Number(questionindex);
     optionindex = Number(optionindex);
     
